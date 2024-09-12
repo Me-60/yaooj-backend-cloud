@@ -1,0 +1,52 @@
+# spring 配置
+spring:
+  cloud:
+    # nacos 服务注册与发现配置
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    # gateway 配置
+    gateway:
+      # 路由配置，统一前端请求并转发到对应 nacos 服务
+      routes:
+        - id: yaooj-backend-user-service
+          uri: lb://yaooj-backend-user-service # 使用 lb:// 前缀指定 Nacos 中的服务名
+          predicates:
+              - Path=/api/user/** # 匹配 /service1/** 的请求
+        - id: yaooj-backend-question-service
+          uri: lb://yaooj-backend-question-service # 使用 lb:// 前缀指定 Nacos 中的服务名
+          predicates:
+            - Path=/api/question/** # 匹配 /service1/** 的请求
+        - id: yaooj-backend-judge-service
+          uri: lb://yaooj-backend-judge-service # 使用 lb:// 前缀指定 Nacos 中的服务名
+          predicates:
+            - Path=/api/judge/** # 匹配 /service1/** 的请求
+  application:
+    name: yaooj-backend-gateway
+  main:
+    # Web 应用类型配置（由传统 servlet 同步型变为 reactive 响应式型）
+    web-application-type: reactive
+  http:
+    encoding:
+
+
+# 服务配置
+server:
+  port: 8101
+
+knife4j:
+  gateway:
+    enabled: true
+    # 指定服务发现的模式聚合微服务文档，并且是默认`default`分组
+    strategy: discover
+    discover:
+      enabled: true
+      # 指定版本号(Swagger2|OpenAPI3)
+      version : openapi3
+      # 需要排除的微服务(eg:网关服务)
+      excluded-services:
+        - yaooj-backend-gateway
+        - yaooj-backend-judge-service
+    tags-sorter: alpha
+
+

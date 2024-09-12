@@ -1,0 +1,69 @@
+# 公共配置文件
+spring:
+  application:
+    name: yaooj-backend-judge-service
+  # 默认 dev 环境
+  profiles:
+    active: dev
+  # 支持 swagger3
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  # session 配置
+  session:
+    store-type: redis
+    # 30 天过期
+    timeout: 2592000
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yaooj
+    username: root
+    password: 123456
+  # Redis 配置
+  redis:
+    database: 3
+    host: 192.168.111.129
+    port: 6379
+    timeout: 5000
+    password: 123456
+  # 文件上传
+  servlet:
+    multipart:
+      # 大小限制
+      max-file-size: 10MB
+  # nacos 服务注册与发现配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+server:
+  address: 0.0.0.0
+  port: 8104
+  servlet:
+    context-path: /api/judge
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+        # 统一请求 cookie 路径，防止跨项目 cookie 路径不一致，导致登录问题
+        # path: /api
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+# 代码沙箱类型配置
+codesandbox:
+  type: remote
+# 远程代码沙箱配置
+yaoojcodesandbox:
+  client:
+    public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9rCZOTrr0W5iWRz6mQFUMKfUSyvpmNRj5ZNzNmmtN93nrbcjeWSWghOSdDIGc/piJOSSLcg+YuG4M97j+P7DiIPUSf56H/BcHoovQvAfxWYJ+diGfqPksF+Q4BH81yEebLjwuh3Rub9A+SOnJytqZSc6Mcli7U82PLaF2oHAFKwIDAQAB
+    user-u-u-i-d: d0a5df71-4ac5-4d33-9c9d-d9f8454cc587
+    username: yaooj
+
